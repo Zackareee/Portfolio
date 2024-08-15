@@ -15,11 +15,14 @@
   import ChevronsUpDown from "lucide-svelte/icons/chevrons-up-down";
   import { ChevronRight  } from "lucide-svelte";
   import { Skeleton } from "$lib/components/ui/skeleton";
-
+  import { getReadme } from './util-3.js';
   import { getRepos } from './util-2.js';
-  let promise = getRepos()
+
+  let promise = getRepos();
+
+
   let username = "zackareee";
-  let name = "Zackaree";
+  let name = "Zackaree ";
   let languages = ["python","javascript","java","react","svelte","c","csharp", "kubernetes", "docker"];
   import { ScrollArea } from "$lib/components/ui/scroll-area/index.js";
 
@@ -28,7 +31,20 @@
   import { GitForkIcon } from "lucide-svelte";
   import { toggleMode } from "mode-watcher";
   import { Button } from "$lib/components/ui/button/index.js";
-
+  let readmeContent = '';
+  let readme_ids = []
+  function handleClick(fullName) {
+    if (!(fullName in readme_ids)) {
+      getReadme(fullName)
+      .then(result => {
+        readmeContent = result; // Update the variable with the fetched content
+        readme_ids.push({[fullName]:[result]});
+        readme_ids = readme_ids
+      })
+    }
+  }
+  
+  
 
 
 
@@ -90,7 +106,7 @@
 
       
         
-
+<!-- 
         <Collapsible.Root>
           <Card.Root>
             <Card.Header>
@@ -127,7 +143,7 @@
               
             </Card.Footer>
           </Card.Root>
-        </Collapsible.Root>
+        </Collapsible.Root> -->
 
         
           
@@ -135,10 +151,10 @@
         <table class="w-full">
           <tbody>
             
-            {#await getReadmes()}
+            {#await promise}
               <div class="flex flex-wrap items-center">
                 {#each {length: 5} as _, i}
-                  <div style="padding:15px">
+                  <div style="padding:15px; display:inline-flex">
                     <Collapsible.Root>
                       <Card.Root>
                         <Card.Header>
@@ -163,17 +179,58 @@
             {:then readme}
               { #each readme as md}
               
-                <tr  class="m-0 border-t p-0 even:bg-muted">
-                  <td class="border px-4 py-2 text-left [&[align=center]]:text-center [&[align=right]]:text-right">
-                    Zackareee/
-                  </td>
-                  <td style="max-width:50vw" class="border px-4 py-2 text-left [&[align=center]]:text-center [&[align=right]]:text-right">
-                    <ScrollArea class="h-[400px] rounded-md border p-4">
-                      {@html wrapCodeWithScrollArea(marked.parse(md))}
-                    </ScrollArea>
-                  </td>
-                </tr>
-              
+
+                <div style="display:inline-flex;" class="flex flex-wrap items-center">
+                  <Collapsible.Root style="padding:15px">
+                    <Card.Root>
+                      <Card.Header>
+                        <Card.Title>
+                          <ScrollArea
+                          class="w-[250px] whitespace-nowrap rounded-md"
+                          orientation="horizontal"
+                        >
+                          <div>
+                            {md.full_name}
+                          </div>
+                          </ScrollArea>
+                        </Card.Title>
+                        <Card.Description style=" width: 250px; height:100px ">{#if md.description != null }{md.description}{/if}</Card.Description>
+                      </Card.Header>
+                      <Card.Content>
+                        <p>
+                          <span class="d-inline-block">
+                            <img style="width:25px; display:inline-block;" src="https://raw.githubusercontent.com/devicons/devicon/master/icons/{md.language.toLowerCase()}/{md.language.toLowerCase()}-original.svg">
+                          </span>
+                          <span class="d-inline-block mr-3">
+                            <span >{md.language}</span>
+                          </span>
+                          <span style="float:right;" class="d-inline-block mr-3">
+                            <span >
+                              <Button on:click={() => handleClick(md.full_name)} variant="outline" size="icon" class="w-7 h-7" > 
+                                <Collapsible.Trigger>
+                                  <ChevronRight  style="display:inline;" class="h-5 w-5" /> 
+                                </Collapsible.Trigger>
+                              </Button>
+                            </span>
+                          </span>
+                          <span style="float:right;" class="d-inline-block mr-3">
+                            <span ><GitForkIcon style="display:inline;" class="h-5 w-5" /> </span>
+                            <span >{md.forks} </span>
+                          </span>
+                        </p>
+                      </Card.Content>
+                      <Card.Footer>
+                          <Collapsible.Content>
+                            text
+                            {@html marked.parse(readme_ids)}
+
+                            <!-- {@html marked.parse(my_markdown)} -->
+                          </Collapsible.Content>
+                        
+                      </Card.Footer>
+                    </Card.Root>
+                  </Collapsible.Root>
+                </div>
               {/each}
             {:catch error}
               <p>error = {error.message}</p>
