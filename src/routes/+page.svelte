@@ -22,15 +22,16 @@
 
 
   let username = "zackareee";
-  let name = "Zackaree ";
+  let name = "Zackaree";
   let languages = ["python","javascript","java","react","svelte","c","csharp", "kubernetes", "docker"];
   import { ScrollArea } from "$lib/components/ui/scroll-area/index.js";
-
+  import * as Tooltip from "$lib/components/ui/tooltip";
   import { Sun } from "lucide-svelte";
   import { Moon } from "lucide-svelte";
   import { GitForkIcon } from "lucide-svelte";
   import { toggleMode } from "mode-watcher";
   import { Button } from "$lib/components/ui/button/index.js";
+    import { getPreviousFocusable } from "@melt-ui/svelte/internal/helpers";
   let readmeContent = '';
   let readme_ids = []
   function handleClick(fullName) {
@@ -38,12 +39,19 @@
       getReadme(fullName)
       .then(result => {
         readmeContent = result; // Update the variable with the fetched content
-        readme_ids.push({[fullName]:[result]});
+        readme_ids[fullName] = marked.parse([result][0]);
+
         readme_ids = readme_ids
+        return readme_ids[fullName]
       })
+      
     }
+    else {return readme_ids.fullName}
   }
   
+  async function getpage(full_name) {
+    return readme_ids.full_name
+  } 
   
 
 
@@ -56,6 +64,9 @@
 </svelte:head>
 
 <section>
+
+
+
   <Button on:click={toggleMode} variant="outline" size="icon">
     <Sun
       class="h-[1.2rem] w-[1.2rem] rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0"
@@ -90,12 +101,28 @@
       </div>
     </span>
   </h1>
-    
+
+
+
         <div class="flex-container border-b" style="padding-top:5vh; padding-bottom:2vh">
           { #each languages as language}
-            <div>
-              <img style="width:100px;" src="https://raw.githubusercontent.com/devicons/devicon/master/icons/{language}/{language}-original.svg">  
-            </div>       
+
+   
+
+          <Tooltip.Root>
+            <Tooltip.Trigger>
+              <div>
+                <img style="width:100px;" src="https://raw.githubusercontent.com/devicons/devicon/master/icons/{language}/{language}-original.svg">  
+              </div>
+           </Tooltip.Trigger>
+            <Tooltip.Content>
+              {language}
+            </Tooltip.Content>
+          </Tooltip.Root>
+
+
+
+                  
           { /each } 
         </div>
         <br>
@@ -105,47 +132,7 @@
         <br>
 
       
-        
-<!-- 
-        <Collapsible.Root>
-          <Card.Root>
-            <Card.Header>
-              <Card.Title>Zackareee/BeaconPlacement</Card.Title>
-              <Card.Description>Generate Minecraft beacon circles accurately</Card.Description>
-            </Card.Header>
-            <Card.Content>
-              <p>
-                <span class="d-inline-block">
-                  <img style="width:25px; display:inline-block;" src="https://raw.githubusercontent.com/devicons/devicon/master/icons/python/python-original.svg">
-                </span>
-                <span class="d-inline-block mr-3">
-                  <span >Python</span>
-                </span>
-                <span style="float:right;" class="d-inline-block mr-3">
-                  <span >
-                    <Button variant="outline" size="icon" class="w-7 h-7" > 
-                      <Collapsible.Trigger>
-                        <ChevronRight  style="display:inline;" class="h-5 w-5" /> 
-                      </Collapsible.Trigger>
-                    </Button>
-                  </span>
-                </span>
-                <span style="float:right;" class="d-inline-block mr-3">
-                  <span ><GitForkIcon style="display:inline;" class="h-5 w-5" /> </span>
-                  <span >12 </span>
-                </span>
-              </p>
-            </Card.Content>
-            <Card.Footer>
-                <Collapsible.Content>
-                  {@html marked.parse(my_markdown)}
-                </Collapsible.Content>
-              
-            </Card.Footer>
-          </Card.Root>
-        </Collapsible.Root> -->
-
-        
+          
           
         
         <table class="w-full">
@@ -221,9 +208,13 @@
                       </Card.Content>
                       <Card.Footer>
                           <Collapsible.Content>
-                            text
-                            {@html marked.parse(readme_ids)}
-
+                            <div style="max-width:100%">
+                              {#await (readme_ids[md.full_name] != undefined)}
+                                waiting
+                              {:then text}
+                                {@html readme_ids[md.full_name]}
+                              {/await}
+                            </div>
                             <!-- {@html marked.parse(my_markdown)} -->
                           </Collapsible.Content>
                         
@@ -240,7 +231,6 @@
 </section>
 
 <style>
-
   .flex-container {
 
     display: flex;

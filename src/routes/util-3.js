@@ -6,7 +6,6 @@ export async function getReadme(full_name) {
             }
         });
         const text = await readmeResponse.text();
-        console.log(text)
         return(text);
     } catch (error) {
         console.error('Error fetching data:', error);
