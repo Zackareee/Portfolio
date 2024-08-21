@@ -185,12 +185,14 @@
                       </Card.Header>
                       <Card.Content>
                         <p>
+                          {#if md.language !== null}
                           <span class="d-inline-block">
                             <img style="width:25px; display:inline-block;" src="https://raw.githubusercontent.com/devicons/devicon/master/icons/{md.language.toLowerCase()}/{md.language.toLowerCase()}-original.svg">
                           </span>
                           <span class="d-inline-block mr-3">
                             <span >{md.language}</span>
                           </span>
+                          {/if}
                           <span style="float:right;" class="d-inline-block mr-3">
                             <span >
                               <Button on:click={() => handleClick(md.full_name)} variant="outline" size="icon" class="w-7 h-7" > 
