@@ -7,7 +7,8 @@
   import { Github } from "lucide-svelte";
   import { Download } from "lucide-svelte";
   import { LucideLinkedin } from "lucide-svelte";
- 
+  import { base } from '$app/paths'
+
 
   // We define a promise here so we can use the svelte {#await} later on
   const PROMISE = getRepos();
@@ -81,7 +82,7 @@
                 <h3 class="scroll-m-20 text-1xl tracking-tight lg:text-2xl">
                   Resumé
                 </h3>
-                <a href="/CV.pdf" download>
+                <a href="{ base + '/CV.pdf'}" download>
                   <Download class="p-1 h-8 w-8" />
                 </a>
               </div>
