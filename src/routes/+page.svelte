@@ -4,10 +4,13 @@
   import DarkMode from "./darkmode.svelte";
   import LanguageIcon from "./language-icon.svelte";
   import { getRepos } from "./get-repo-list.js";
+  import { Github } from "lucide-svelte";
+  import { LucideLinkedin } from "lucide-svelte";
 
   // We define a promise here so we can use the svelte {#await} later on
   const PROMISE = getRepos();
   const USERNAME = "zackareee";
+  const LINKEDIN = "https://linkedin.com/in/💻👨‍💻zackaree-kendall-king-576311227"
   const NAME = "Zackaree";
   const LANGUAGES = [
     "python",
@@ -64,6 +67,13 @@
                 <h2 class="scroll-m-20 text-1xl tracking-tight lg:text-2xl">
                   Software Engineer
                 </h2>
+              <div class="flex-container" >
+                <a href="https://github.com/{USERNAME}"><Github class="p-1 mt-2 h-10 w-10" /></a>
+                <a href="{LINKEDIN}"><LucideLinkedin class="p-1 mt-2 h-10 w-10" />
+
+              </div>
+                
+                
               </td>
             </tr>
           </tbody>
@@ -82,7 +92,7 @@
   </div>
   <br />
   <h2 class="scroll-m-20 pb-2 text-3xl font-semibold tracking-tight first:mt-0">
-    Github
+    <a href="https://github.com/{USERNAME}">Github</a>
   </h2>
   <br />
   <table class="w-full">
