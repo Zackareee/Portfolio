@@ -5,7 +5,9 @@
   import LanguageIcon from "./language-icon.svelte";
   import { getRepos } from "./get-repo-list.js";
   import { Github } from "lucide-svelte";
+  import { Download } from "lucide-svelte";
   import { LucideLinkedin } from "lucide-svelte";
+ 
 
   // We define a promise here so we can use the svelte {#await} later on
   const PROMISE = getRepos();
@@ -68,11 +70,22 @@
                   Software Engineer
                 </h2>
               <div class="flex-container" >
-                <a href="https://github.com/{USERNAME}"><Github class="p-1 mt-2 h-10 w-10" /></a>
-                <a href="{LINKEDIN}"><LucideLinkedin class="p-1 mt-2 h-10 w-10" />
-
+                <a href="https://github.com/{USERNAME}">
+                  <Github class="p-1 mt-2 h-10 w-10" />
+                </a>
+                <a href="{LINKEDIN}">
+                  <LucideLinkedin class="p-1 mt-2 h-10 w-10" />
+                </a>
               </div>
-                
+              <div class="flex-container mt-10 " >
+                <h3 class="scroll-m-20 text-1xl tracking-tight lg:text-2xl">
+                  Resumé
+                </h3>
+                <a href="/CV.pdf" download>
+                  <Download class="p-1 h-8 w-8" />
+                </a>
+              </div>
+              
                 
               </td>
             </tr>
