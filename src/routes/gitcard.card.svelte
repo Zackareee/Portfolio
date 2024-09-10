@@ -76,9 +76,10 @@
             </Button>
           </span>
           <span style="float:right;" class="d-inline-block mr-3">
-            <GitForkIcon class="h-5 w-5" />
-            <span>{md.forks}</span>
+            <span ><GitForkIcon style="display:inline;" class="h-5 w-5" /> </span>
+            <span >{md.forks > 0 ? md.forks : " "} </span>
           </span>
+          
         </p>
       </Card.Content>
       <Card.Footer>
