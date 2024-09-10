@@ -8,6 +8,7 @@
   import { GitForkIcon } from "lucide-svelte";
   import { getReadme } from "./get-readme-file.js";
   import { Github } from "lucide-svelte";
+  import { marked } from 'marked';
 
   let readmeContent = "";
   let readme_ids = [];
@@ -35,7 +36,9 @@
             class="w-[250px] whitespace-nowrap rounded-md"
             orientation="horizontal"
           >
-            <div><a href="https://github.com/{md.full_name}">{md.full_name}</a></div>
+            <div>
+              <a href="https://github.com/{md.full_name}">{md.full_name}</a>
+            </div>
           </ScrollArea>
         </Card.Title>
         <Card.Description style="width: 250px; height:100px">
